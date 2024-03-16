@@ -14,9 +14,12 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 - Easily create Slack blocks for forms with minimal code.
 - Supports various form elements including text inputs, checkboxes, radio buttons, and submit buttons.
 - Customizable options for each form element.
-- Retrieve all form values at once using `getFormValues` method.
+- Set initial value of form using `setFormValues` method.
+- Retrieve all form values at once using `getFormValues` method. setFormValues
 - Set custom errors for form elements using `setErrors` method.
 - Dynamically add or remove blocks based on conditions using `addBlock(s)` and `removeBlocks` methods.
+
+#### Will explore all the above mentioned methods later this section.
 
 ### Current Supported form element types
 
@@ -160,3 +163,162 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
     "label": "View"
   }
   ```
+
+### Usage
+
+```javascript
+
+// Main array for your form.
+const feedbackForm = [
+    {
+        key: "order-feedback-label",
+        type: "text",
+        value: "Feedback form about your recent purchase.",
+    },
+    {
+        key: "satisfaction-level",
+        type: "select",
+        label: "Satisfaction level rating",
+        placeholder: "Select your satisfaction level",
+        required: true,
+        multiselect: false,
+    },
+    {
+        key: "feedback-about",
+        type: "user-select",
+        label: "Sales Representative(s)",
+        placeholder: "Choose recipient(s)",
+        required: true,
+        multiselect: true,
+    },
+    {
+        key: "selected-channel",
+        type: "channel-select",
+        label: "Select Channel(s)",
+        placeholder: "Choose channel(s)",
+        required: false,
+        multiselect: true,
+    },
+    {
+        key: "feedback-text",
+        type: "text-input",
+        label: "Your feedback",
+        placeholder: "Type your feedback here",
+        hint: "Public",
+        required: true,
+        multiline: true,
+    },
+    {
+        key: "product-quality",
+        type: "radio",
+        label: "How was the Product quality ?",
+        required: true,
+    },
+    {
+        key: "issues-faced",
+        type: "checkbox",
+        label: "Select any Issue(s) faced by you",
+        required: false,
+    },
+    {
+        key: "date",
+        type: "date-picker",
+        label: "Date of Purchase",
+        required: true,
+    },
+    {
+        key: "time",
+        type: "time-picker",
+        label: "Time of Purchase",
+        required: false,
+    },
+    {
+        key: "preview",
+        type: "button",
+        text: "Preview the form here",
+        label: "View",
+    },
+];
+
+
+// Actual form object
+const form = {
+    id: "feedback-form", // must be unique.
+    blocks: feedbackForm,
+    optionValues: { // Option values are required for type " "select" | "radio" | "checkbox"
+
+        // Here "satisfaction-level" is the key defined in our feedbackForm array which is of type "select"
+        "satisfaction-level": [
+            { text: "Very Satisfied", value: "very-satisfied", description: "Higest Rank" },
+            { text: "Satisfied", value: "satisfied" },
+            { text: "Neutral", value: "neutral" },
+            { text: "Dissatisfied", value: "dissatisfied" },
+            { text: "Very Dissatisfied", value: "very-dissatisfied", description: "Lowest Rank" },
+        ],
+
+        // Here "product-quality" is the key defined in our feedbackForm array which is of type "radio"
+        "product-quality": [
+            { text: "Excellent", value: "excellent", description: "Higest Rank" },
+            { text: "Good", value: "good" },
+            { text: "Average", value: "average" },
+            { text: "Poor", value: "poor", description: "Lowest Rank" }
+        ],
+
+        // Here "issues-faced" is the key defined in our feedbackForm array which is of type "checkbox"
+        "issues-faced": [
+            { text: "Late Delivery", value: "late-delivery" },
+            { text: "Wrong Product", value: "wrong-product" },
+            { text: "Damanged Product", value: "damanged-product" },
+            { text: "Billing Error", value: "billing-error" },
+            { text: "Other", value: "other", description: "Please specify an issue" }
+        ]
+    }
+};
+
+const { SlackFormManager } = require("slack-block-form");
+
+// SlackFormManager.create accepts two arguments
+// 1. Your actual form object
+// 2. stateValue (payload.view.state.values) is the form data sent to the server when any dispatch action or form is submitted.
+const formManager = SlackFormManager.create(form, stateValues);
+
+const {
+    getFormValues,
+    setFormValues,
+    setErrors,
+    addBlocks,
+    renderForm,
+} = formManager;
+
+// Now you have access to these powerful methods to make your job easy.
+
+// 1. [getFormValues] getting form value is as easy as just calling this method
+// You'll directly get the form submitted values as key value paris with "key" you defined in your actual form.blocks array. How Quick & Easy was that?
+{
+  'satisfaction-level': 'very-satisfied',
+  'feedback-about': [ 'U06NRHQ018B' ],
+  'feedback-text': 'Hey nice delivery... Very much on time.',
+  'product-quality': 'excellent',
+  'issues-faced': [ 'other' ],
+  date: '2024-03-24',
+  time: '07:00'
+}
+
+// 2. [setFormValues] You can set your initial formValues with this method
+// here keys will be the "key" you defined in your actual form.blocks array
+setFormValues({
+  'feedback-text': 'Poor product deliveed',
+  'product-quality': 'bad',
+  'issues-faced': [ 'other' ],
+});
+
+// 3. [setErrors] Slack have error handling but it's not that customizable :-(
+// With setErrors you can define your own custom errors as a makrdown texts at each form elements
+// here keys will be the "key" you defined in your actual form.blocks array
+setFormValues({
+  date: '⚠️ Date cannot be in the past',
+  time: '⚠️ Time cannot be in the past',
+  'feedback-text': '📝 Feedback is required',
+});
+
+```
