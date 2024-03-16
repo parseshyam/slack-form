@@ -1,13 +1,16 @@
 # slack-block-form
-A form sdk for slack app development 
+
+A form sdk for slack app development
 Slack Blocks Form Builder is a JavaScript library that simplifies the creation of interactive forms using Slack Block Kit. It provides an intuitive interface to generate Slack blocks representing various form elements such as text inputs, checkboxes, radio buttons, and submit buttons.
 
 ### The Motivation.
+
 Slack is a popular platform for team communication and collaboration, and building custom apps for Slack can greatly enhance team productivity. However, developing Slack apps often involves repetitive tasks and complex configurations, especially when creating interactive forms.
 
 The motivation behind Slack Blocks Form Builder is to simplify the process of building forms for Slack apps. By providing an easy-to-use library that abstracts away the complexities of Slack Block Kit, developers can focus more on building the core functionality of their apps and less on the intricacies of UI design and block construction.
 
 ### Features
+
 - Easily create Slack blocks for forms with minimal code.
 - Supports various form elements including text inputs, checkboxes, radio buttons, and submit buttons.
 - Customizable options for each form element.
@@ -15,40 +18,42 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 - Set custom errors for form elements using `setErrors` method.
 - Dynamically add or remove blocks based on conditions using `addBlock(s)` and `removeBlocks` methods.
 
-
 ### Current Supported form element types
 
-1. **Text** 
+1. **Text**
+
    - **JSON Object Representation:**
      ```json
      {
-       "key": "header",
+       "key": "order-feedback-label",
        "type": "text",
-       "textType":"context | header | md", // default is md
-       "value": "Basic text field to show in a form."
+       "textType": "context | header | md", // default is md
+       "value": "Feedback form about your recent purchase."
      }
      ```
 
-2. **Select** 
+2. **Select**
+
    - **JSON Object Representation:**
      ```json
      {
-       "key": "inventory",
+       "key": "satisfaction-level",
        "type": "select",
-       "label": "Select an Inventory",
-       "placeholder": "Choose an option",
+       "label": "Satisfaction level rating",
+       "placeholder": "Select your satisfaction level",
        "required": true,
-       "multiselect": true
+       "multiselect": false
      }
      ```
 
 3. **User Select**
+
    - **JSON Object Representation:**
      ```json
      {
-       "key": "recipient",
+       "key": "feedback-about",
        "type": "user-select",
-       "label": "Select Recipient(s)",
+       "label": "Sales Representative(s)",
        "placeholder": "Choose recipient(s)",
        "required": true,
        "multiselect": true
@@ -56,6 +61,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
      ```
 
 4. **Channel Select**
+
    - **JSON Object Representation:**
      ```json
      {
@@ -63,27 +69,17 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
        "type": "channel-select",
        "label": "Select Channel(s)",
        "placeholder": "Choose channel(s)",
-       "required": true,
+       "required": false,
        "multiselect": true
      }
      ```
 
-5. **Button**
-   - **JSON Object Representation:**
-     ```json
-     {
-       "key": "preview",
-       "type": "button",
-       "text": "Preview the form here",
-       "label": "View"
-     }
-     ```
+5. **Text Input:**
 
-6. **Text Input:**
    - **JSON Object Representation:**
      ```json
      {
-       "key": "feedback",
+       "key": "feedback-text",
        "type": "text-input",
        "label": "Your feedback",
        "placeholder": "Type your feedback here",
@@ -93,51 +89,56 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
      }
      ```
 
-7. **Radio**
+6. **Radio**
+
    - **JSON Object Representation:**
      ```json
      {
-       "key": "gender",
+       "key": "product-quality",
        "type": "radio",
-       "label": "Select a gender",
+       "label": "How was the Product quality ?",
        "required": true
      }
      ```
 
-8. **Checkbox**
+7. **Checkbox**
+
    - **JSON Object Representation:**
      ```json
      {
-       "key": "interest",
+       "key": "issues-faced",
        "type": "checkbox",
-       "label": "Select Your interest(s)",
+       "label": "Select any Issue(s) faced by you",
        "required": true
      }
      ```
 
-9. **Time Picker**
+8. **Date Picker**
+
+   - **JSON Object Representation:**
+     ```json
+     {
+       "key": "date",
+       "type": "date-picker",
+       "label": "Date of Purchase",
+       "required": true
+     }
+     ```
+
+9. **Time Picker:**
+
    - **JSON Object Representation:**
      ```json
      {
        "key": "time",
        "type": "time-picker",
-       "label": "Select Time",
-       "required": true
+       "label": "Time of Purchase",
+       "required": false
      }
      ```
 
-10. **Date Picker:**
-    - **JSON Object Representation:**
-      ```json
-      {
-        "key": "date",
-        "type": "date-picker",
-        "label": "Select Date",
-        "required": true
-      }
-      ```
+10. **Date Time Picker**
 
-11. **Date Time Picker**
     - **JSON Object Representation:**
       ```json
       {
@@ -147,3 +148,15 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
         "required": true
       }
       ```
+
+11. **Button**
+
+- **JSON Object Representation:**
+  ```json
+  {
+    "key": "preview",
+    "type": "button",
+    "text": "Preview the form here",
+    "label": "View"
+  }
+  ```
