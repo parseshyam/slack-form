@@ -175,7 +175,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
   }
   ```
 
-### Usage
+### Form Generation
 
 ```javascript
 
@@ -285,34 +285,45 @@ const form = {
         ]
     }
 };
+```
 
+### Usage
+
+```javascript
 const { SlackFormManager } = require("slack-block-form");
 
-// SlackFormManager.create accepts two arguments
-// 1. Your actual form object
-// 2. stateValue (payload.view.state.values) is the form data sent to the server when any dispatch action or form is submitted.
 const {
     renderModal,
+    renderForm,
     getFormValues,
     setFormValues,
     setErrors,
+    addBlock,
     addBlocks,
-    renderForm,
 } = SlackFormManager.create(form, stateValues);
 ```
+
+`SlackFormManager.create` accepts two arguments
+
+1. Actual **form** object which we create in previous section **Form Generation**
+2. **stateValue (payload.view.state.values)**  is the form data slack sent to the server when any dispatch action or form is submitted.
 
 #### Now you have access to these powerful methods to make your job easy
 
 1. `renderModal`
-2. `getFormValues`
-3. `setFormValues`
-4. `setErrors`
-5. `addBlock`
-6. `renderForm`
+2. `renderForm`
+3. `getFormValues`
+4. `setFormValues`
+5. `setErrors`
+6. `addBlock`
+7. `addBlocks`
 
 #### Let's see the usage one by one
 
 ##### 1. `renderModal`
+
+When you want to render a form in Slack's modal format,
+In your event action handler use this method `renderModal`
 
 ```javascript
 const { renderModal } = SlackFormManager.create(form, stateValues);
@@ -321,7 +332,16 @@ openView(modal);
 console.log(JSON.stringify(modal));
 ```
 
-##### 2. `getFormValues`
+##### 2. `renderForm`
+
+`renderForm` is same as `renderModal` only difference it just returns the slack blocks instead of entire slack's modal.
+
+```javascript
+const { renderForm } = SlackFormManager.create(form, stateValues);
+const slackBlocks = renderForm();
+```
+
+##### 3. `getFormValues`
 
 Getting form value is as easy as just calling this method.
 You'll directly get the form submitted values as key value paris with **"key"** you defined in your actual form.blocks array.
@@ -342,9 +362,9 @@ console.log(formValues);
 }
 ```
 
-##### 3. `setFormValues`
+##### 4. `setFormValues`
 
-You can set your initial formValues with this method,
+You can set your initial formValues before you render your modal with this method,
 here keys will be the **"key"** you defined in your actual form.blocks array
 
 ```javascript
@@ -358,9 +378,9 @@ const modal = renderModal();
 openView(modal); // Will render the modal with initial values provided.
 ```
 
-##### 4. `setErrors`
+##### 5. `setErrors`
 
-Slack have error handling but it's not that customizable :-(
+Slack have error handling but it's not that customizable.
 With `setErrors` you can define your own custom errors as a makrdown texts at each form elements
 Here keys will be the **"key"** you defined in your actual **form.blocks** array
 
@@ -375,16 +395,17 @@ const modal = renderModal();
 updateView(modal);
 ```
 
-##### 4. `addBlock`
+##### 6. `addBlock`
 
-Based on any conditions you can add block dynamically anywhere you want.
+Based on any conditions you can add form element dynamically anywhere you want.
 Here's the thing you should know about `addBlock`
 Add block accepts 2 arguments
 
 1. The actual element object you want to add dynamically in your form
 2. Location, Where you want to actually add in the form ?
   
-  > - If you don't pass anything it'll be added at the end of the form [ By default end]
+  > - If you don't pass anything it'll be by default added at the end of the form
+  > - If you pass **`start`** it'll be added at the start of the form
   > - If you pass like **`after::"key"`** or **`before::"key"`** it'll add before or after the form element whom key you've provided.
 
 ```javascript
@@ -407,5 +428,50 @@ if (formValues['issues-faced'].includes('other')) {
     addBlock(otherIssueTextBlock,`after::issues-faced`);
 }
 const modal = renderModal();
-updateView(modal); // now you can re-render your modal, you'll notice the new block dynamically added
+updateView(modal); // now you can re-render your modal, you'll notice the new block dynamically got added
+```
+
+##### 7. `addBlocks`
+
+`addBlocks` is same as `addBlock` unlike adding single form element,
+It accepts array of form elements to add them in bulks.
+
+Sill what will be location of form elements to be added ?
+
+  > - Each form element will have one optional key **`"location"`** with values like **`after::"key"`**, **`before::"key"`** and **`start`**
+  > - If you don't key **`"location"`** pass anything it'll be by default added at the end of the form.
+
+```javascript
+const {
+    renderModal,
+    getFormValues,
+    addBlocks,
+} = SlackFormManager.create(form, stateValues);
+
+const formValues = getFormValues();
+if (formValues['issues-faced'].includes('other')) {
+    const blocksToBeAdded = [
+      {
+        key: "product-quality-feedback",
+        type: "text-input",
+        label: "Your feedback",
+        placeholder: "Any comments on product Quality?",
+        required: false,
+        multiline: true,
+        location: `after::product-quality` // This block be added after the form elemment with key "product-quality"
+      },
+      {
+          key: "other-issue-feedback",
+          type: "text-input",
+          label: "Your feedback",
+          placeholder: "Describe the issue you faced",
+          required: true,
+          multiline: true,
+          location: `after::issues-faced`  // This block be added after the form elemment with key "issues-faced"
+      }
+    ];
+    addBlocks();
+}
+const modal = renderModal();
+updateView(modal); // now you can re-render your modal, you'll notice the new block(s) dynamically got added
 ```
