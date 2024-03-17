@@ -3,7 +3,7 @@
 A form sdk for slack app development
 Slack Blocks Form Builder is a JavaScript library that simplifies the creation of interactive forms using Slack Block Kit. It provides an intuitive interface to generate Slack blocks representing various form elements such as text inputs, checkboxes, radio buttons, and submit buttons.
 
-### The Motivation.
+### The Motivation
 
 Slack is a popular platform for team communication and collaboration, and building custom apps for Slack can greatly enhance team productivity. However, developing Slack apps often involves repetitive tasks and complex configurations, especially when creating interactive forms.
 
@@ -19,13 +19,14 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 - Set custom errors for form elements using `setErrors` method.
 - Dynamically add or remove blocks based on conditions using `addBlock(s)` and `removeBlocks` methods.
 
-#### Will explore all the above mentioned methods later this section.
+#### Will explore all the above mentioned methods later this section
 
 ### Current Supported form element types
 
 1. **Text**
 
    - **JSON Object Representation:**
+
      ```json
      {
        "key": "order-feedback-label",
@@ -38,6 +39,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 2. **Select**
 
    - **JSON Object Representation:**
+
      ```json
      {
        "key": "satisfaction-level",
@@ -52,6 +54,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 3. **User Select**
 
    - **JSON Object Representation:**
+
      ```json
      {
        "key": "feedback-about",
@@ -66,6 +69,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 4. **Channel Select**
 
    - **JSON Object Representation:**
+
      ```json
      {
        "key": "channel",
@@ -80,6 +84,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 5. **Text Input:**
 
    - **JSON Object Representation:**
+
      ```json
      {
        "key": "feedback-text",
@@ -95,6 +100,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 6. **Radio**
 
    - **JSON Object Representation:**
+
      ```json
      {
        "key": "product-quality",
@@ -107,6 +113,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 7. **Checkbox**
 
    - **JSON Object Representation:**
+
      ```json
      {
        "key": "issues-faced",
@@ -119,6 +126,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 8. **Date Picker**
 
    - **JSON Object Representation:**
+
      ```json
      {
        "key": "date",
@@ -131,6 +139,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 9. **Time Picker:**
 
    - **JSON Object Representation:**
+
      ```json
      {
        "key": "time",
@@ -143,6 +152,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 10. **Date Time Picker**
 
     - **JSON Object Representation:**
+
       ```json
       {
         "key": "dateTime",
@@ -155,6 +165,7 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 11. **Button**
 
 - **JSON Object Representation:**
+
   ```json
   {
     "key": "preview",
@@ -280,20 +291,46 @@ const { SlackFormManager } = require("slack-block-form");
 // SlackFormManager.create accepts two arguments
 // 1. Your actual form object
 // 2. stateValue (payload.view.state.values) is the form data sent to the server when any dispatch action or form is submitted.
-const formManager = SlackFormManager.create(form, stateValues);
-
 const {
+    renderModal,
     getFormValues,
     setFormValues,
     setErrors,
     addBlocks,
     renderForm,
-} = formManager;
+} = SlackFormManager.create(form, stateValues);
+```
 
-// Now you have access to these powerful methods to make your job easy.
+#### Now you have access to these powerful methods to make your job easy
 
-// 1. [getFormValues] getting form value is as easy as just calling this method
-// You'll directly get the form submitted values as key value paris with "key" you defined in your actual form.blocks array. How Quick & Easy was that?
+1. `renderModal`
+2. `getFormValues`
+3. `setFormValues`
+4. `setErrors`
+5. `addBlock`
+6. `renderForm`
+
+#### Let's see the usage one by one
+
+##### 1. `renderModal`
+
+```javascript
+const { renderModal } = SlackFormManager.create(form, stateValues);
+const modal = renderModal();
+openView(modal);
+console.log(JSON.stringify(modal));
+```
+
+##### 2. `getFormValues`
+
+Getting form value is as easy as just calling this method.
+You'll directly get the form submitted values as key value paris with **"key"** you defined in your actual form.blocks array.
+
+```javascript
+const { getFormValues } = SlackFormManager.create(form, stateValues);
+const formValues = getFormValues();
+console.log(formValues);
+// output:-
 {
   'satisfaction-level': 'very-satisfied',
   'feedback-about': [ 'U06NRHQ018B' ],
@@ -303,22 +340,72 @@ const {
   date: '2024-03-24',
   time: '07:00'
 }
+```
 
-// 2. [setFormValues] You can set your initial formValues with this method
-// here keys will be the "key" you defined in your actual form.blocks array
+##### 3. `setFormValues`
+
+You can set your initial formValues with this method,
+here keys will be the **"key"** you defined in your actual form.blocks array
+
+```javascript
+const { setFormValues, renderModal } = SlackFormManager.create(form, stateValues);
 setFormValues({
   'feedback-text': 'Poor product deliveed',
   'product-quality': 'bad',
   'issues-faced': [ 'other' ],
 });
+const modal = renderModal();
+openView(modal); // Will render the modal with initial values provided.
+```
 
-// 3. [setErrors] Slack have error handling but it's not that customizable :-(
-// With setErrors you can define your own custom errors as a makrdown texts at each form elements
-// here keys will be the "key" you defined in your actual form.blocks array
-setFormValues({
+##### 4. `setErrors`
+
+Slack have error handling but it's not that customizable :-(
+With `setErrors` you can define your own custom errors as a makrdown texts at each form elements
+Here keys will be the **"key"** you defined in your actual **form.blocks** array
+
+```javascript
+const { setErrors, renderModal } = SlackFormManager.create(form, stateValues);
+setErrors({
   date: '⚠️ Date cannot be in the past',
   time: '⚠️ Time cannot be in the past',
   'feedback-text': '📝 Feedback is required',
 });
+const modal = renderModal();
+updateView(modal);
+```
 
+##### 4. `addBlock`
+
+Based on any conditions you can add block dynamically anywhere you want.
+Here's the thing you should know about `addBlock`
+Add block accepts 2 arguments
+
+1. The actual element object you want to add dynamically in your form
+2. Location, Where you want to actually add in the form ?
+  
+  > - If you don't pass anything it'll be added at the end of the form [ By default end]
+  > - If you pass like **`after::"key"`** or **`before::"key"`** it'll add before or after the form element whom key you've provided.
+
+```javascript
+const {
+    renderModal,
+    getFormValues,
+    addBlock,
+} = SlackFormManager.create(form, stateValues);
+
+const formValues = getFormValues();
+if (formValues['issues-faced'].includes('other')) {
+    const otherIssueTextBlock = {
+        key: "other-issue",
+        type: "text-input",
+        label: "Your feedback",
+        placeholder: "Describe the issue you faced",
+        required: true,
+        multiline: true,
+    }
+    addBlock(otherIssueTextBlock,`after::issues-faced`);
+}
+const modal = renderModal();
+updateView(modal); // now you can re-render your modal, you'll notice the new block dynamically added
 ```
