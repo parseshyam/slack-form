@@ -17,7 +17,7 @@ Developing forms for Slack apps often involves navigating complex configurations
 - Easily handle custom errors with the `setErrors` method.
 - Dynamically add or remove blocks based on conditions using `addBlock(s)` and `removeBlocks` methods.
 
-#### Will explore all the above-mentioned methods later in this section.
+#### Will explore all the above-mentioned methods later in this section
 
 ### Currently Supported Form Element Types
 
@@ -300,13 +300,14 @@ const {
     setErrors,
     addBlock,
     addBlocks,
+    removeBlocks
 } = SlackFormManager.create(form, stateValues);
 ```
 
 `SlackFormManager.create` accepts two arguments
 
-1. Actual **form** object which we create in previous section **Form Generation**
-2. **stateValue (payload.view.state.values)**  is the form data slack sent to the server when any dispatch action or form is submitted.
+1. Actual **form** object which we create in the previous section **Form Generation**
+2. **stateValue (payload.view.state.values)** is the form data Slack sent to the server when any dispatch action or form is submitted.
 
 #### Now you have access to these powerful methods to make your job easy
 
@@ -317,6 +318,7 @@ const {
 5. `setErrors`
 6. `addBlock`
 7. `addBlocks`
+8. `removeBlocks`
 
 #### Let's see the usage one by one
 
@@ -334,7 +336,7 @@ console.log(JSON.stringify(modal));
 
 ##### 2. `renderForm`
 
-`renderForm` is same as `renderModal` only difference it just returns the slack blocks instead of entire slack's modal.
+`renderForm` is same as `renderModal`. The only difference is it returns the Slack blocks instead of the entire Slack modal.
 
 ```javascript
 const { renderForm } = SlackFormManager.create(form, stateValues);
@@ -343,8 +345,8 @@ const slackBlocks = renderForm();
 
 ##### 3. `getFormValues`
 
-Getting form value is as easy as just calling this method.
-You'll directly get the form submitted values as key value paris with **"key"** you defined in your actual form.blocks array.
+Getting form values is as easy as calling this method,
+You'll directly get the form submitted values as key-value pairs with the **"key"** you defined in your actual form blocks array.
 
 ```javascript
 const { getFormValues } = SlackFormManager.create(form, stateValues);
@@ -364,8 +366,8 @@ console.log(formValues);
 
 ##### 4. `setFormValues`
 
-You can set your initial formValues before you render your modal with this method,
-here keys will be the **"key"** you defined in your actual form.blocks array
+You can set your initial form values before you render your modal with this method,
+Here keys will be the **"key"** you defined in your actual form blocks array.
 
 ```javascript
 const { setFormValues, renderModal } = SlackFormManager.create(form, stateValues);
@@ -380,9 +382,7 @@ openView(modal); // Will render the modal with initial values provided.
 
 ##### 5. `setErrors`
 
-Slack have error handling but it's not that customizable.
-With `setErrors` you can define your own custom errors as a makrdown texts at each form elements
-Here keys will be the **"key"** you defined in your actual **form.blocks** array
+Slack has error handling, but it's not that customizable.With setErrors, you can define your custom errors as Markdown texts at each form element. Here keys will be the **"key"** you defined in your actual form blocks array.
 
 ```javascript
 const { setErrors, renderModal } = SlackFormManager.create(form, stateValues);
@@ -433,8 +433,8 @@ updateView(modal); // now you can re-render your modal, you'll notice the new bl
 
 ##### 7. `addBlocks`
 
-`addBlocks` is same as `addBlock` unlike adding single form element,
-It accepts array of form elements to add them in bulks.
+`addBlocks` is same as `addBlock` but unlike adding a single form element,
+it accepts an array of form elements to add them in bulk.
 
 Sill what will be location of form elements to be added ?
 
@@ -458,7 +458,7 @@ if (formValues['issues-faced'].includes('other')) {
         placeholder: "Any comments on product Quality?",
         required: false,
         multiline: true,
-        location: `after::product-quality` // This block be added after the form elemment with key "product-quality"
+        location: `after::product-quality` // This block be added after the form element with the key "product-quality"
       },
       {
           key: "other-issue-feedback",
@@ -467,11 +467,31 @@ if (formValues['issues-faced'].includes('other')) {
           placeholder: "Describe the issue you faced",
           required: true,
           multiline: true,
-          location: `after::issues-faced`  // This block be added after the form elemment with key "issues-faced"
+          location: `after::issues-faced`  // This block be added after the form element with the key "issues-faced"
       }
     ];
-    addBlocks();
+    addBlocks(blocksToBeAdded);
 }
+const modal = renderModal();
+updateView(modal); // now you can re-render your modal, you'll notice the new block(s) dynamically got added
+```
+
+##### 8. `removeBlocks`
+
+`removeBlocks` let's you remove the form element(s).
+Accepts array of form element **"keys"**
+
+```javascript
+const {
+    renderModal,
+    removeBlocks,
+} = SlackFormManager.create(form, stateValues);
+
+removeBlocks([
+  "product-quality",
+  "issues-faced"
+]);
+
 const modal = renderModal();
 updateView(modal); // now you can re-render your modal, you'll notice the new block(s) dynamically got added
 ```
