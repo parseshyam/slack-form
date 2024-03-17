@@ -1,27 +1,25 @@
-# slack-block-form
+# Slack Block Form SDK: Streamlining Form Development for Slack Apps
 
-A form sdk for slack app development
-Slack Blocks Form Builder is a JavaScript library that simplifies the creation of interactive forms using Slack Block Kit. It provides an intuitive interface to generate Slack blocks representing various form elements such as text inputs, checkboxes, radio buttons, and submit buttons.
+Welcome to the Slack Block Form SDK, a tool designed to simplify the creation of interactive forms for Slack apps. Our SDK empowers developers to effortlessly build forms, enhancing productivity within Slack teams.
 
-### The Motivation
+## Motivation
 
-Slack is a popular platform for team communication and collaboration, and building custom apps for Slack can greatly enhance team productivity. However, developing Slack apps often involves repetitive tasks and complex configurations, especially when creating interactive forms.
-
-The motivation behind Slack Blocks Form Builder is to simplify the process of building forms for Slack apps. By providing an easy-to-use library that abstracts away the complexities of Slack Block Kit, developers can focus more on building the core functionality of their apps and less on the intricacies of UI design and block construction.
+Developing forms for Slack apps often involves navigating complex configurations and repetitive tasks. Our SDK aims to alleviate these hurdles by abstracting away the complexities, allowing developers to focus on core functionality.
 
 ### Features
 
-- Easily create Slack blocks for forms with minimal code.
-- Supports various form elements including text inputs, checkboxes, radio buttons, and submit buttons.
+- Effortlessly create Slack blocks for forms with minimal code.
+- Supports all basic form elements including text, text inputs, option selectors, checkboxes, radio buttons, user(s) selection, and channel(s) selection.
 - Customizable options for each form element.
-- Set initial value of form using `setFormValues` method.
-- Retrieve all form values at once using `getFormValues` method. setFormValues
-- Set custom errors for form elements using `setErrors` method.
+- Render Slack Modals with ease using the `renderModal` method.
+- Set initial form values using the `setFormValues` method.
+- Retrieve all form values at once with the `getFormValues` method.
+- Easily handle custom errors with the `setErrors` method.
 - Dynamically add or remove blocks based on conditions using `addBlock(s)` and `removeBlocks` methods.
 
-#### Will explore all the above mentioned methods later this section
+#### Will explore all the above-mentioned methods later in this section.
 
-### Current Supported form element types
+### Currently Supported Form Element Types
 
 1. **Text**
 
@@ -177,10 +175,12 @@ The motivation behind Slack Blocks Form Builder is to simplify the process of bu
 
 ### Form Generation
 
+Generate forms by defining an array of form elements and passing it as the `form` object.
+
 ```javascript
 
 // Main array for your form.
-const feedbackForm = [
+const feedbackFormElements = [
     {
         key: "order-feedback-label",
         type: "text",
@@ -255,12 +255,12 @@ const feedbackForm = [
 // Actual form object
 const form = {
     id: "feedback-form", // must be unique.
-    blocks: feedbackForm,
+    blocks: feedbackFormElements,
     optionValues: { // Option values are required for type " "select" | "radio" | "checkbox"
 
         // Here "satisfaction-level" is the key defined in our feedbackForm array which is of type "select"
         "satisfaction-level": [
-            { text: "Very Satisfied", value: "very-satisfied", description: "Higest Rank" },
+            { text: "Very Satisfied", value: "very-satisfied", description: "Highest Rank" },
             { text: "Satisfied", value: "satisfied" },
             { text: "Neutral", value: "neutral" },
             { text: "Dissatisfied", value: "dissatisfied" },
@@ -269,7 +269,7 @@ const form = {
 
         // Here "product-quality" is the key defined in our feedbackForm array which is of type "radio"
         "product-quality": [
-            { text: "Excellent", value: "excellent", description: "Higest Rank" },
+            { text: "Excellent", value: "excellent", description: "Highest Rank" },
             { text: "Good", value: "good" },
             { text: "Average", value: "average" },
             { text: "Poor", value: "poor", description: "Lowest Rank" }
@@ -279,7 +279,7 @@ const form = {
         "issues-faced": [
             { text: "Late Delivery", value: "late-delivery" },
             { text: "Wrong Product", value: "wrong-product" },
-            { text: "Damanged Product", value: "damanged-product" },
+            { text: "Damaged Product", value: "damaged-product" },
             { text: "Billing Error", value: "billing-error" },
             { text: "Other", value: "other", description: "Please specify an issue" }
         ]
