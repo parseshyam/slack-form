@@ -4,7 +4,7 @@ Welcome to the Slack Block Form SDK, a tool designed to simplify the creation of
 
 ## Motivation
 
-Developing forms for Slack apps often involves navigating complex configurations and repetitive tasks. This SDK aims to alleviate these hurdles by abstracting away the complexities, allowing developers to focus on core functionality.
+Developing forms for Slack apps often involves navigating complex configurations and repetitive tasks. This SDK aims to alleviate these hurdles by abstracting away the complexities, allowing developers to focus on core functionality. Hence writing 3x Less code.
 
 ### Features
 
