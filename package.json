@@ -1,0 +1,31 @@
+{
+  "name": "slack-block-form",
+  "version": "1.0.0",
+  "description": "A form sdk for slack app development",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "homepage": "https://github.com/parseshyam/slack-block-form#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/parseshyam/slack-block-form.git"
+  },
+  "bugs": {
+    "url": "https://github.com/parseshyam/slack-block-form/issues"
+  },
+  "keywords": [
+    "Forms",
+    "Slack Forms",
+    "Slack Form SDK",
+    "Slack Blocks Form",
+    "Slack app development"
+  ],
+  "author": "shyam",
+  "license": "ISC"
+}
