@@ -1,10 +1,10 @@
 # Slack Block Form SDK: Streamlining Form Development for Slack Apps
 
-Welcome to the Slack Block Form SDK, a tool designed to simplify the creation of interactive forms for Slack apps. Our SDK empowers developers to effortlessly build forms, enhancing productivity within Slack teams.
+Welcome to the Slack Block Form SDK, a tool designed to simplify the creation of interactive forms for Slack apps. This SDK empowers developers to effortlessly build forms, enhancing productivity within Slack teams.
 
 ## Motivation
 
-Developing forms for Slack apps often involves navigating complex configurations and repetitive tasks. Our SDK aims to alleviate these hurdles by abstracting away the complexities, allowing developers to focus on core functionality.
+Developing forms for Slack apps often involves navigating complex configurations and repetitive tasks. This SDK aims to alleviate these hurdles by abstracting away the complexities, allowing developers to focus on core functionality.
 
 ### Features
 
@@ -45,6 +45,7 @@ Developing forms for Slack apps often involves navigating complex configurations
        "type": "select",
        "label": "Satisfaction level rating",
        "placeholder": "Select your satisfaction level",
+       "watch": false,   // If true it dispathes the slack action, defaults to false.
        "required": true,
        "disabled": false,
        "multiselect": false
@@ -61,6 +62,7 @@ Developing forms for Slack apps often involves navigating complex configurations
        "type": "user-select",
        "label": "Sales Representative(s)",
        "placeholder": "Choose recipient(s)",
+       "watch": false,
        "required": true,
        "disabled": false,
        "multiselect": true
@@ -77,6 +79,7 @@ Developing forms for Slack apps often involves navigating complex configurations
        "type": "channel-select",
        "label": "Select Channel(s)",
        "placeholder": "Choose channel(s)",
+       "watch": false,
        "required": false,
        "disabled": false,
        "multiselect": true
@@ -93,6 +96,7 @@ Developing forms for Slack apps often involves navigating complex configurations
        "type": "text-input",
        "label": "Your feedback",
        "placeholder": "Type your feedback here",
+       "watch": false,
        "hint": "Public",
        "required": true,
        "disabled": false,
@@ -109,6 +113,7 @@ Developing forms for Slack apps often involves navigating complex configurations
        "key": "product-quality",
        "type": "radio",
        "label": "How was the Product quality ?",
+       "watch": false,
        "required": true,
        "disabled": false
      }
@@ -123,6 +128,7 @@ Developing forms for Slack apps often involves navigating complex configurations
        "key": "issues-faced",
        "type": "checkbox",
        "label": "Select any Issue(s) faced by you",
+       "watch": false,
        "required": true,
        "disabled": false
      }
@@ -137,6 +143,7 @@ Developing forms for Slack apps often involves navigating complex configurations
        "key": "date",
        "type": "date-picker",
        "label": "Date of Purchase",
+       "watch": false,
        "required": true,
        "disabled": false
      }
@@ -151,6 +158,7 @@ Developing forms for Slack apps often involves navigating complex configurations
        "key": "time",
        "type": "time-picker",
        "label": "Time of Purchase",
+       "watch": false,
        "required": false,
        "disabled": false
      }
@@ -165,6 +173,7 @@ Developing forms for Slack apps often involves navigating complex configurations
         "key": "dateTime",
         "type": "date-time-picker",
         "label": "Select Date and Time",
+        "watch": false,
         "required": true,
         "disabled": false
       }
@@ -512,4 +521,58 @@ removeBlocks(["product-quality", "issues-faced"]);
 
 const modal = renderModal();
 views.update(modal); // now you can re-render your modal, you'll notice the new block(s) dynamically got added
+```
+
+###  Important Note:-
+
+With the usage of this form library, All the blockId and ActionId are auto generated and handled by the library itself,
+Here's what generated block Id and actionId looks like:-
+
+Generated Block Id  => `{formId}::{key}::block`
+
+Generated Action Id => `{formId}::{key}::action`
+
+For instance consider below form element.
+
+```javascript
+const formId = "give-feedback-form";
+...
+{
+  key: "satisfaction-level",
+  type: "select",
+  label: "Satisfaction level rating",
+  placeholder: "Select your satisfaction level",
+  required: true,
+  multiselect: false,
+  watch: false
+}
+...
+```
+
+Since no `actionId` or `blockId` is passed in above example,
+The auto generated ActionId and BlockId will look like:-
+- Generated Block Id  => `{formId}::{key}::block`
+- Generated Action Id => `{formId}::{key}::action`
+
+`actionId: "give-feedback-form::satisfaction-level::action"`
+
+`blockId: "give-feedback-form::satisfaction-level::block"`
+
+However there may be sistuation when you want to override this default behaviour and assign you own custom actionId and blockId,
+You can easly to that passing your own actionId and blockId.
+
+```javascript
+...
+{
+  key: "satisfaction-level",
+  type: "select",
+  label: "Satisfaction level rating",
+  placeholder: "Select your satisfaction level",
+  required: true,
+  multiselect: false,
+  watch: false,
+  actionId: "my-custom-action-id", // custom action_id
+  blockId: "my-custom-block-id"    // custom block_id
+}
+...
 ```
