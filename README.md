@@ -1,6 +1,6 @@
-# Slack Block Form SDK: Streamlining Form Development for Slack Apps
+# Slack Form SDK: Streamlining Form Development for Slack Apps
 
-Welcome to the Slack Block Form SDK, a tool designed to simplify the creation of interactive forms for Slack apps. This SDK empowers developers to effortlessly build forms, enhancing productivity within Slack teams.
+Welcome to the Slack Form SDK, a tool designed to simplify the creation of interactive forms for Slack apps. This SDK empowers developers to effortlessly build forms, enhancing productivity within Slack teams.
 
 ## Motivation
 
@@ -8,7 +8,7 @@ Developing forms for Slack apps often involves navigating complex configurations
 
 ### Features
 
-- Effortlessly create Slack blocks for forms with minimal code.
+- Effortlessly create Slack forms with minimal code.
 - Supports all basic form elements including text, text inputs, option selectors, checkboxes, radio buttons, user(s) selection, and channel(s) selection.
 - Customizable options for each form element.
 - Render Slack Modals with ease using the `renderModal` method.
