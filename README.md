@@ -319,7 +319,7 @@ const form = {
 ### Usage
 
 ```javascript
-const { SlackFormManager } = require("slack-block-form");
+const { SlackFormManager } = require("slack-form");
 
 const {
   renderModal,
