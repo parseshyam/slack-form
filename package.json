@@ -4,7 +4,7 @@
   "description": "A form sdk for slack app development",
   "main": "lib/index.js",
   "scripts": {
-    "test": "node ./lib/tests/index.js"
+    "test": "node --test"
   },
   "files": [
     "lib",
