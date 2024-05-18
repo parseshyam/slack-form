@@ -1,6 +1,6 @@
 {
   "name": "slack-form",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A form sdk for slack app development",
   "main": "lib/index.js",
   "scripts": {
