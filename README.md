@@ -520,7 +520,7 @@ const { renderModal, removeBlocks } = SlackFormManager.create(
 removeBlocks(["product-quality", "issues-faced"]);
 
 const modal = renderModal();
-views.update(modal); // now you can re-render your modal, you'll notice the new block(s) dynamically got added
+views.update(modal); // now you can re-render your modal, you'll notice the new block(s) dynamically got removed
 ```
 
 ###  Important Note:-
